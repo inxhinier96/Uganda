@@ -11,7 +11,8 @@ namespace Ugandali
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
+        Texture2D smileyImage;
+        Vector2 smileyPossition;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -27,7 +28,9 @@ namespace Ugandali
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            //smileyPossition = Vector2.Zero;  //aynısı
+            smileyPossition = new Vector2(0.0f, 0.0f);
+           
             base.Initialize();
         }
 
@@ -39,7 +42,7 @@ namespace Ugandali
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            smileyImage = Content.Load<Texture2D>("Smiley");
             // TODO: use this.Content to load your game content here
         }
 
@@ -63,7 +66,27 @@ namespace Ugandali
                 Exit();
 
             // TODO: Add your update logic here
+            float time = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            float speed = 100.0f;
+            float move = speed * time;
+            KeyboardState state = Keyboard.GetState();
 
+            if(state.IsKeyDown(Keys.Down))
+            {
+                smileyPossition.Y += move; 
+            }
+            if(state.IsKeyDown(Keys.Up))
+            {
+                smileyPossition.Y -= move;
+            }
+            if (state.IsKeyDown(Keys.Left))
+            {
+                smileyPossition.X -= move;
+            }
+            if (state.IsKeyDown(Keys.Right))
+            {
+                smileyPossition.X += move;
+            }
             base.Update(gameTime);
         }
 
@@ -73,10 +96,12 @@ namespace Ugandali
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Green);
 
             // TODO: Add your drawing code here
-
+            spriteBatch.Begin();
+            spriteBatch.Draw(smileyImage, smileyPossition,Color.White);
+            spriteBatch.End();
             base.Draw(gameTime);
         }
     }
